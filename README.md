@@ -35,8 +35,8 @@ Tu tarea es completar la implementación de toda la funcionalidad de forma tal d
 
 
 # DEV UPDATE
-# LOS TEST CORREN EN UPDATED.TEST.TS ya que no se permitía modificar el archivo original de tests pero sí todas las
-# las otras dependencias del proyecto
+### LOS TEST CORREN EN UPDATED.TEST.TS ya que no se permitía modificar el archivo original de tests pero sí todas las
+### las otras dependencias del proyecto
 
 ## Tecnologías utilizadas
 - Node.js

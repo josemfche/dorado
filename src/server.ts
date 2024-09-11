@@ -22,7 +22,6 @@ if (config.NODE_ENV !== 'test') {
 app.disable('x-powered-by')
 app.use(express.json())
 
-// app.use(buildRequestContext)
 
 app.use('/ping', (req, res) => {
   res.json({ ok: true })

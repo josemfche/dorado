@@ -1,13 +1,8 @@
-import { Server } from "@hapi/hapi"
+import { Router } from 'express'
+import itemRoutes from './item/item.routes'
 
-export const defineRoutes = (server: Server) => {
-    server.route({
-        method: 'GET',
-        path: '/ping',
-        handler: async (request, h) => {
-            return {
-                ok: true
-            }
-        }
-    })  
-}
+const rootRouter = Router()
+
+rootRouter.use('/items', itemRoutes)
+
+export default rootRouter

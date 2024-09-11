@@ -1,26 +1,35 @@
-import Hapi from '@hapi/hapi'
-import { defineRoutes } from './routes'
+// eliminates the necessity of using try catch blocks for async functions
+import 'express-async-errors'
+import './utils/mongoosePlugins'
 
-const getServer = () => {
-    const server = Hapi.server({
-        host: 'localhost',
-        port: 3000,
-    })
+import express from 'express'
+import morgan from 'morgan'
+import rootRouter from './routes'
+import { globalErrorHandler } from './middleware/globalErrorHandler'
+import { config } from './utils/config'
+import { mongoConnection } from './utils/mongoConnection'
 
-    defineRoutes(server)
+mongoConnection()
 
-    return server
+export const app = express()
+
+const morganOption = config.NODE_ENV === 'production' ? 'tiny' : 'common'
+
+if (config.NODE_ENV !== 'test') {
+  app.use(morgan(morganOption))
 }
 
-export const initializeServer = async () => {
-    const server = getServer()
-    await server.initialize()
-    return server
-}
+app.disable('x-powered-by')
+app.use(express.json())
 
-export const startServer = async () => {
-    const server = getServer()
-    await server.start()
-    console.log(`Server running on ${server.info.uri}`)
-    return server
-};
+// app.use(buildRequestContext)
+
+app.use('/ping', (req, res) => {
+  res.json({ ok: true })
+})
+app.use('/', rootRouter)
+
+
+app.use(globalErrorHandler)
+
+export default app

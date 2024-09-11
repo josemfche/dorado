@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "esModuleInterop": true,
+      "target": "ES2022",
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "outDir": "build",
+      "skipLibCheck": true,
+      "resolveJsonModule": true,
+      "composite": true,
+      "noEmit": false,
+      "strict": true,
+      "declaration": true,
+      "inlineSources": true,
+  
+      // Set `sourceRoot` to  "/" to strip the build path prefix
+      // from generated source code references.
+      // This improves issue grouping in Sentry.
+      "sourceRoot": "/"
+    },
+  
+    "ts-node": {
+      "files": true
+    },
+    "files": ["index.d.ts", "./jest/jest.d.ts"],
+    "include": ["src/**/*.ts", "jest/**/*.ts", "types/**/*.ts"],
+    "lib": ["ES2022"]
+  }
+  

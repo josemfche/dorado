@@ -1,8 +1,17 @@
-import { initializeServer, startServer } from "./server"
+import dotenv from 'dotenv'
+dotenv.config({ path: `.env.local` })
+dotenv.config()
 
-process.on('unhandledRejection', (err) => {
-    console.error(err)
-    process.exit(1)
+import './utils/sentry'
+
+import { config } from './utils/config'
+
+import app from './server'
+
+app.listen(config.PORT, () => {
+  if (config.NODE_ENV === 'production') {
+    console.log('Server is running 🌈 http://localhost:3000')
+  }
+
+  console.log(`Server is running http://localhost:${config.PORT}`)
 })
-
-await startServer()

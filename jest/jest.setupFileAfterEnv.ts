@@ -31,7 +31,7 @@ let application: Server
 
 beforeAll(async () => {
   connection = await mongoose.connect(
-    process.env.MONGO_URI || 'mongodb://mongodb:27017/eldorado',
+    process.env.MONGO_URI || 'mongodb://localhost:27017/eldorado',
     {}
   )
   await seedDB()

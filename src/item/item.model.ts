@@ -1,4 +1,4 @@
-import { Schema, model, Document, ObjectId, Model } from 'mongoose'
+import { Schema, model, Document, Model } from 'mongoose'
 import { StringifyIDs } from '../utils/stringifyIDs'
 
 export interface Item {
@@ -13,6 +13,10 @@ interface ItemDocument extends Omit<Document, '_id'>, Item {}
 
 export const ItemSchema = new Schema(
   {
+    _id: {
+      type: String,
+      required: true
+    },
     name: {
       type: String,
       required: true
@@ -23,7 +27,10 @@ export const ItemSchema = new Schema(
     }
   },
   {
-    timestamps: true
+    timestamps: true,
+    shardKey: {
+      _id: 'hashed'
+    }
   }
 )
 

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { z } from 'zod'
 import { Item } from '../item.model'
+import { OID } from '../../../jest/fixtures/item'
 
 export const createItemSchema = z.object({
   name: z.string(),
@@ -27,7 +28,7 @@ export default async function createItem (req: Request, res: Response<CreateItem
     ])
   }
 
-  const item = await Item.create({ name, price })
+  const item = await Item.create({ _id: OID().toString(), name, price })
 
   res.status(201).json({
     _id: item._id,

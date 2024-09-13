@@ -11,19 +11,45 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=test
-      - MONGODB_URI=mongodb://mongodb:27017/eldorado
+      - MONGODB_URI=mongodb://mongos:27017/eldorado
     depends_on:
-      - mongodb
+      - mongos
 
-  mongodb:
-    image: mongo:latest
+  configsvr:
+    image: mongo:5.0
+    command: mongod --configsvr --replSet configrs --port 27017 --dbpath /data/db
+    volumes:
+      - config_data:/data/db
+    ports:
+      - "27019:27017"
+
+  shard1:
+    image: mongo:5.0
+    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+    volumes:
+      - shard1_data:/data/db
+    ports:
+      - "27020:27017"
+
+  shard2:
+    image: mongo:5.0
+    command: mongod --shardsvr --replSet shard2rs --port 27017 --dbpath /data/db
+    volumes:
+      - shard2_data:/data/db
+    ports:
+      - "27021:27017"
+
+  mongos:
+    image: mongo:5.0
+    command: mongos --configdb configrs/configsvr:27017 --port 27017 --bind_ip 0.0.0.0
     ports:
       - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=123456
+    depends_on:
+      - configsvr
+      - shard1
+      - shard2
 
 volumes:
-  mongodb_data:
+  config_data:
+  shard1_data:
+  shard2_data:
